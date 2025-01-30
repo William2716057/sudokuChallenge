@@ -48,4 +48,28 @@ def solve(sudoku, row, col):
     #final position 
     if row == 8 and col == 9:
         return True
+ 
+    #go to next column if last on row
+    if col == 9:
+        row += 1
+        col = 0
+        
+    #if cell full go to next
+    if sudoku[row][col] != 0:
+        return solve(sudoku, row, col + 1)
     
+    for num in range(1, 10):
+        # If it is safe to place num at current position
+        if rowCheck(sudoku, row, col, num):
+            sudoku[row][col] = num
+            if solve(sudoku, row, col + 1):
+                return True
+            sudoku[row][col] = 0
+
+def solveSudoku(sudoku):
+    solve(sudoku, 0, 0)
+    
+solveSudoku(sudoku)
+
+for row in sudoku:
+        print(" ".join(map(str, row)))
