@@ -16,3 +16,8 @@ returnedNumbers = ''.join(char if char.isdigit() or char == '.' else '' for char
 
 print(returnedNumbers)
 
+separated = "" 
+for i in range(0, len(returnedNumbers), 9):
+    separated += returnedNumbers[i:i+9] + '\n'
+print(separated)
+
