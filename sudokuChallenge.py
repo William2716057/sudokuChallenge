@@ -42,29 +42,29 @@ def rowCheck(sudoku, row, col, num):
             
     return True
 
-# Recursive function to solve the sudoku
+# solve the sudoku
 def solve(sudoku, row, col):
-    # If we reached the end of the grid, we are done
+    # done if reach end of grid
     if row == 8 and col == 9:
         return True
 
-    # Move to the next column, or next row if the column is 9
+    # Move to next column, or row if the column is 9
     if col == 9:
         row += 1
         col = 0
 
-    # If the current cell is already filled, skip to the next one
+    # If the current cell is already filled, skip to next one
     if sudoku[row][col] != 0:
         return solve(sudoku, row, col + 1)
 
-    # Try all possible numbers from 1 to 9
+    # Test all possible numbers
     for num in range(1, 10):
-        # If it is safe to place num at current position
+        # check if number can be placed
         if rowCheck(sudoku, row, col, num):
             sudoku[row][col] = num
             if solve(sudoku, row, col + 1):
                 return True
-            sudoku[row][col] = 0  # Backtrack if not successful
+            sudoku[row][col] = 0  # Recurse of not successful
 
     return False
 
