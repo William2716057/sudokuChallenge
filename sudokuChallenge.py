@@ -32,3 +32,20 @@ def rowCheck(sudoku, row, col, num):
         if sudoku[x][col] == num:
             return False
         
+    #check if number exists in each square
+    startRow = row - (row % 3)
+    startCol = col - (col % 3)
+    
+    for i in range(3):
+        for j in range(3):
+            if sudoku[i + startRow][j + startCol] == num:
+                return False
+            
+    return True
+
+#solving function
+def solve(sudoku, row, col):
+    #final position 
+    if row == 8 and col == 9:
+        return True
+    
