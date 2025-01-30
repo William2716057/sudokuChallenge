@@ -12,64 +12,68 @@ inputOne = """+-------+-------+-------+
 | 4 . 7 | . 3 . | . . . |
 +-------+-------+-------+"""
 
+# Create a list of digits from the input
 returnedNumbers = ''.join(char if char.isdigit() or char == '.' else '' for char in inputOne)
 
-#print(returnedNumbers)
-
-sudoku = "" 
+# Convert to 2D list representation of the sudoku puzzle
+sudoku = []
 for i in range(0, len(returnedNumbers), 9):
-    sudoku += returnedNumbers[i:i+9] + '\n'
-print(sudoku)
+    row = [0 if x == '.' else int(x) for x in returnedNumbers[i:i+9]]
+    sudoku.append(row)
 
-#check if number exists 
+# Function to check if a number is safe to place
 def rowCheck(sudoku, row, col, num):
-#check if exists in row    
-    for x in range(9):
-        if sudoku[row][x] == num:
-            return False
- #check if exists in column
-    for x in range(9):
-        if sudoku[x][col] == num:
+    # Check if num exists in the row
+    if num in sudoku[row]:
+        return False
+    
+    # Check if num exists in the column
+    for r in range(9):
+        if sudoku[r][col] == num:
             return False
         
-    #check if number exists in each square
-    startRow = row - (row % 3)
-    startCol = col - (col % 3)
-    
+    # Check if num exists in the 3x3 subgrid
+    startRow = (row // 3) * 3
+    startCol = (col // 3) * 3
     for i in range(3):
         for j in range(3):
-            if sudoku[i + startRow][j + startCol] == num:
+            if sudoku[startRow + i][startCol + j] == num:
                 return False
             
     return True
 
-#solving function
+# Recursive function to solve the sudoku
 def solve(sudoku, row, col):
-    #final position 
+    # If we reached the end of the grid, we are done
     if row == 8 and col == 9:
         return True
- 
-    #go to next column if last on row
+
+    # Move to the next column, or next row if the column is 9
     if col == 9:
         row += 1
         col = 0
-        
-    #if cell full go to next
+
+    # If the current cell is already filled, skip to the next one
     if sudoku[row][col] != 0:
         return solve(sudoku, row, col + 1)
-    
+
+    # Try all possible numbers from 1 to 9
     for num in range(1, 10):
         # If it is safe to place num at current position
         if rowCheck(sudoku, row, col, num):
             sudoku[row][col] = num
             if solve(sudoku, row, col + 1):
                 return True
-            sudoku[row][col] = 0
+            sudoku[row][col] = 0  # Backtrack if not successful
 
+    return False
+
+# Solving the Sudoku puzzle
 def solveSudoku(sudoku):
     solve(sudoku, 0, 0)
     
 solveSudoku(sudoku)
 
+# Print the solved sudoku
 for row in sudoku:
-        print(" ".join(map(str, row)))
+    print(" ".join(map(str, row)))
