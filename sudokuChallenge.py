@@ -14,10 +14,21 @@ inputOne = """+-------+-------+-------+
 
 returnedNumbers = ''.join(char if char.isdigit() or char == '.' else '' for char in inputOne)
 
-print(returnedNumbers)
+#print(returnedNumbers)
 
-separated = "" 
+sudoku = "" 
 for i in range(0, len(returnedNumbers), 9):
-    separated += returnedNumbers[i:i+9] + '\n'
-print(separated)
+    sudoku += returnedNumbers[i:i+9] + '\n'
+print(sudoku)
 
+#check if number exists 
+def rowCheck(sudoku, row, col, num):
+#check if exists in row    
+    for x in range(9):
+        if sudoku[row][x] == num:
+            return False
+ #check if exists in column
+    for x in range(9):
+        if sudoku[x][col] == num:
+            return False
+        
